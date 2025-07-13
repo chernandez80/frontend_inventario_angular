@@ -1,1 +1,9 @@
 ### aqui sera nuestras pruebas rest
+
+##LOGIN
+
+##REGISTER
+
+## PROFILE
+
+##LOGOUT
