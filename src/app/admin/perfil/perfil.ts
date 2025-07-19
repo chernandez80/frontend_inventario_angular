@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Auth } from '../../core/services/auth';
 
 @Component({
   selector: 'app-perfil',
@@ -8,4 +9,16 @@ import { Component } from '@angular/core';
 })
 export class Perfil {
 
+  authService = inject(Auth);
+
+  constructor(){
+    this.authService.perfil().subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
 }

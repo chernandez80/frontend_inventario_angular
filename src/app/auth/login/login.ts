@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '../../core/services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ export class Login {
 
   fb =  inject(FormBuilder);
   authService = inject(Auth);
+  router = inject(Router);
 
   //formGroup
   loginForm = new FormGroup({
@@ -34,9 +36,16 @@ export class Login {
     this.authService.login({email,password}).subscribe(
       (res: any) => {
         console.log(res);
+
+        //Almacenamos el token
+        localStorage.setItem("access_token", res.access_token);
+
+        this.router.navigate(["/admin/perfil"]);
       },
       (error: any) => {
         console.log(error);
+
+        alert("Error de Credenciales");
       }
     );
   }
