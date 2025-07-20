@@ -6,6 +6,7 @@ import { Contactos } from './web/contactos/contactos';
 import { Error404 } from './errors/error404/error404';
 import { WebLayout } from './layout/web-layout/web-layout';
 import { AppLayout } from './layout/component/app.layout';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
     {  
@@ -20,6 +21,6 @@ export const routes: Routes = [
               
         ] 
     },
-   { path: 'admin', component: AppLayout, children: [{ path: '', loadChildren: () => import("./admin/admin-module").then(m => m.AdminModule) }] } , // Se habilita el modulo de administracion
+   { path: 'admin', component: AppLayout, children: [{ path: '', loadChildren: () => import("./admin/admin-module").then(m => m.AdminModule) }], canActivate: [authGuard] } , // Se habilita el modulo de administracion
     { path: '**', component: Error404 }   
 ];
