@@ -30,8 +30,8 @@ export class AppMenu {
             {
                 label: 'Seguridad',
                 items: [
-                    { label: 'Usuarios', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/usuario'] },
-                    { label: 'Roles y Permisos', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/user'] },
+                    { label: 'Roles y Permisos', icon: 'pi pi-fw pi-check-square', routerLink: ['/admin/role'] },
                 ]
             },
              {
