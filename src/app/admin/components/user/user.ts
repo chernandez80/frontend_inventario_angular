@@ -1,6 +1,8 @@
 import { Component, inject, OnInit, signal  } from '@angular/core';
 import { UserService } from '../../services/user-service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { IUser } from '../../interfaces/user-interface';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-user',
@@ -12,9 +14,9 @@ export class User implements OnInit {
   
   userService = inject(UserService);
   visible: boolean = false;
-  users: any[] = [];
+  users = signal<IUser[]>([]);
   //users = signal<UserInterface[]>([]);
-  //user_id = -1;
+  user_id = -1;
 
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -30,6 +32,7 @@ export class User implements OnInit {
     this.userService.funListar().subscribe(
       (res : any) => {
         console.log(res);
+        this.users.set(res);
       }
     )
   }
@@ -42,8 +45,27 @@ export class User implements OnInit {
     this.userService.funGuardar(this.userForm.value).subscribe(
       (res) => {
         alert('usuario registrado');
+        this.getUsers();
+        this.visible =false;
+        this.userForm.reset();
+
+        Swal.fire({
+          title: "Usuario Registrado",
+          text: "Ok para continuar",
+          icon: "success"
+        });
       }
     )
   }
 
+  funEliminar(us: any){}
+  funEditar(us: any){
+    this.user_id = us.id;
+    this.userForm = new FormGroup({
+    name: new FormControl(us.name, [Validators.required]),
+    email: new FormControl(us.email, [Validators.email, Validators.required]),
+    password: new FormControl(us.password, [Validators.required, Validators.minLength(6)])
+  });
+
+  }
 }
