@@ -42,7 +42,24 @@ export class User implements OnInit {
   }
 
   funGuardarUser(){
-    this.userService.funGuardar(this.userForm.value).subscribe(
+    if (this.user_id > 0)
+    {
+      //Edicion
+      this.userService.funModificar(this.user_id, this.userForm.value).subscribe(
+        (res) => {
+          this.getUsers();
+          this.visible = false;
+          this.userForm.reset();
+
+          Swal.fire({
+            title: "Usuario Actualizado!",
+            text: "Ok para continuar!",
+            icon: "success"
+          });
+        }
+      )
+    }else{
+      this.userService.funGuardar(this.userForm.value).subscribe(
       (res) => {
         alert('usuario registrado');
         this.getUsers();
@@ -54,18 +71,39 @@ export class User implements OnInit {
           text: "Ok para continuar",
           icon: "success"
         });
-      }
-    )
+      })
+      
+      alert('Error');
+    }
+    
+    this.user_id =-1;
   }
 
-  funEliminar(us: any){}
+  funEliminar(us: any){
+    if(confirm('Esta seguro de eliminar el usuario?')){
+      this.userService.funEliminar(us.id).subscribe(
+        (res) => {
+          this.getUsers();
+          Swal.fire({
+            title: "Usuario Eliminado",
+            text: "Ok para continuar",
+            icon: "success"
+          });
+        }
+      )
+    }
+  }
+
   funEditar(us: any){
     this.user_id = us.id;
     this.userForm = new FormGroup({
     name: new FormControl(us.name, [Validators.required]),
     email: new FormControl(us.email, [Validators.email, Validators.required]),
     password: new FormControl(us.password, [Validators.required, Validators.minLength(6)])
-  });
+    });
 
+    this.visible = true;
+
+  
   }
 }
